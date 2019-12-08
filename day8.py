@@ -11,25 +11,18 @@ def part1(st,wide,tall):
     while (st):
         layers.append(st[0:wide*tall])
         st=st[wide*tall:]
-    min=100
-    minProduct=0
-    for l in layers:
-        if Counter(l)["0"] < min:
-            min = Counter(l)["0"]
-            minProduct=Counter(l)["2"]*Counter(l)["1"]
-    
-    print(minProduct)
-
+    g=[(Counter(l)["0"], Counter(l)["2"]*Counter(l)["1"]) for  l in layers ]
+    print(sorted(g,key=lambda x : int(x[0]))[0][1]) 
     lp=layers[::-1] 
-    first=lp.pop()
+    pattern=lp.pop()
 
     while (lp):
-        first=addLayer(first,lp.pop()) 
+        pattern=addLayer(pattern,lp.pop()) 
 
     n = wide
-    formatted = [first[i:i+n] for i in range(0, len(first), n)]
+    formatted = [pattern[i:i+n] for i in range(0, len(pattern), n)]
     for fo in formatted:
-        print(fo) 
+        print(fo.replace("0",".")) 
 
 
 def addLayer(p,o):
