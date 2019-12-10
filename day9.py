@@ -3,7 +3,7 @@ from collections import Counter
 import unittest
 
 
-with open('data/other_input/day9-input.file') as f:
+with open('data/my_input/day9-input.file') as f:
     numbers = [ line.strip() for line in f]
 
 def part1(st,input):
