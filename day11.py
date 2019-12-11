@@ -2,7 +2,7 @@ import sys
 with open('data/other_input/day11-input.file') as f:
     numbers = [ line.strip() for line in f]
 
-def part1(st):
+def part1(st,ii):
     l=list(map(int,st.split(",")))
     d=dict()
     d2=dict()
@@ -18,12 +18,10 @@ def part1(st):
     inp=0
     output1=0
     output2=0
-    output1done=False
-    output2done=False
     step=0
     globalStop=False
     inputQueue=[]
-    inputQueue.append(0)
+    inputQueue.append(ii)
     outputQueue=[]
     while not globalStop:
         #inp=ra((x,y),d2)
@@ -45,18 +43,21 @@ def part1(st):
                 p1=ra(r2+rb,d)
             else:
                 p1=ra(r2,d) 
+
             if pp2==1:
                 p2=r3
             elif pp2==2 :
                 p2=ra(r3+rb,d)
             else:
                 p2=ra(r3,d) 
+
             if pp3==1:
                 p3=r4
             elif pp3==2 :
                 p3=r4+rb
             else:
                 p3=r4
+
             if (c==1):
                 d[p3]=p1+p2
                 i+=4
@@ -95,10 +96,14 @@ def part1(st):
                 i+=2
             else:
                 print("???")
+        if globalStop:
+            break
         try:
+            # print(outputQueue)
             output2=outputQueue.pop()
             output1=outputQueue.pop()
         except IndexError:
+            # print("exception")
             break
         # print("output :",output1,output2)
         #print
@@ -107,7 +112,8 @@ def part1(st):
         d2[(x,y)]=output1
 
         # print("init d",direction)
-        # print("init pos",x,y)
+        print("init pos",x,y)
+        print("output :",output1,output2)
         # print("oo",output2)
         #turn and move
         increment=output2 if output2==1 else -1
@@ -121,10 +127,13 @@ def part1(st):
             y+=1
         elif direction==3:
             x-=1
-        # print("final d",direction)
-        # print("final pos",x,y)
+        print("final d",direction)
+        print("final pos",x,y)
+        print("fi",i)
+        print(d[i],d[i+1],d[i+2],d[i+3])
+        print(" ")
         inputQueue.append(ra((x,y),d2))
-        printmap(d2)
+        #printmap(d2)
         # print("info next step, pos",x,y,"; reading input",inp, "; direction", direction, ", i pointer=",i)
         # print("paint,step:",paint,step)
         # if(step==10):
@@ -132,7 +141,7 @@ def part1(st):
          
     
     print(d2)
-    print(paint)
+    print(paint,step)
     printmap(d2)
 
   
@@ -151,4 +160,6 @@ def printmap(d2):
         for j in range(ymin-1,ymax+2):
             sprint+= str(d2[i,j]) if (i,j) in d2 else "."
         print(sprint.replace("1","O").replace("0"," "))
-part1(numbers[0])
+
+#part1(numbers[0],0)
+part1(numbers[0],1)
