@@ -1,4 +1,4 @@
-import sys
+import itertools as it
 
 with open("data/other_input/day13-input.file") as f:
     numbers = [line.strip() for line in f]
@@ -7,8 +7,9 @@ with open("data/other_input/day13-input.file") as f:
 def part1(st, ii,part2):
     l = list(map(int, st.split(",")))
     d = dict()
-    d2 = dict()
+    d2 = dict() 
  
+    # print(listinput)
     for i in range(len(l)):
         d[i] = l[i]
     if part2:
@@ -28,9 +29,9 @@ def part1(st, ii,part2):
     inputQueue.append(ii)
     outputQueue = []
     score=[]
+    posball=0
+    pospaddle=0
     while not globalStop:
-        # inp=ra((x,y),d2)
-        # print("reading input:",inp)
         step += 1
         stop = False
         while not stop:
@@ -115,8 +116,22 @@ def part1(st, ii,part2):
         else:
             d2[(x,y)]=tileid
 
-    print(sum([1 for p in d2.values() if p==2]))
-    printmap(d2)
+        if tileid==3:
+            pospaddle=x
+        elif tileid==4:
+            posball=x
+        if posball<pospaddle:
+            inputQueue.append(-1)
+        elif posball==pospaddle:
+            inputQueue.append(0)
+        else:
+            inputQueue.append(1)
+
+    if not part2:
+        print(sum([1 for p in d2.values() if p==2]))
+        #printmap(d2)
+    else:
+        print(max(score))
 
 
 def ra(a, d):
@@ -138,5 +153,5 @@ def printmap(d2):
 
 
 part1(numbers[0], 0,False)
-#part1(numbers[0], 2,True)
+part1(numbers[0], 2,True)
 
