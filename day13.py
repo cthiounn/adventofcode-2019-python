@@ -1,6 +1,6 @@
 import itertools as it
 
-with open("data/other_input/day13-input.file") as f:
+with open("data/my_input/day13-input.file") as f:
     numbers = [line.strip() for line in f]
 
 
