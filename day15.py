@@ -1,4 +1,4 @@
-with open("data/other_input/day15-input.file") as f:
+with open("data/my_input/day15-input.file") as f:
     numbers = [line.strip() for line in f]
 
 def part1(st):
@@ -18,6 +18,7 @@ def part1(st):
     while len(tile_to_explore)>0:
         tile_to_explore2=tile_to_explore.copy()
         tile_to_explore.clear()
+        superbreak=False
         for t in tile_to_explore2:
             for j in 'NWES': 
                 x,y=t
@@ -132,12 +133,13 @@ def part1(st):
                     if response==2 and not found_oxygen:
                         found_oxygen=True
                         print(dist)
-                        #print(x,y)
+                        # print(x,y)
                         #printmap(known_tile)
                         dist=0
                         tile_to_explore.clear()
                         known_tile.clear()
                         tile_to_explore[(x,y)]=(dist,i,d,rb)
+                        superbreak=True
                         break
                     elif response==2:
                         break
@@ -146,6 +148,8 @@ def part1(st):
                     elif response==1:
                         tile_to_explore[(x,y)]=(dist,i,d,rb) 
                         break
+            if superbreak:
+                break
     print(max(map(int,[known_tile[p][0] for p in known_tile if known_tile[p][1]==1])))
 
 def ra(a, d):
