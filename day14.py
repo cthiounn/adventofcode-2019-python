@@ -22,7 +22,9 @@ def part1(lines):
             store[inname]=0
             formula.append((inname,innumber))
         reacts[outname]=formula
-    totalOre=reduce("FUEL",1,store,reacts)
+        
+    store1=store.copy()
+    totalOre=reduce("FUEL",1,store1,reacts)
     print(totalOre)
     print(int(searchIn(1e12,store,reacts)))
 
@@ -45,7 +47,8 @@ def searchIn(search,store,reacts):
     supsearch=search
     while infsearch<supsearch:
         middle=(infsearch+supsearch+1)//2
-        if (reduce("FUEL",middle,store,reacts)<=search):
+        storecopy=store.copy()
+        if (reduce("FUEL",middle,storecopy,reacts)<=search):
             infsearch=middle
         else :
             supsearch=middle-1
