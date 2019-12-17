@@ -106,6 +106,8 @@ def part1(st):
         elif response == 10:
             x = 0
             y += 1
+        else:
+            x += 1
 
     dscaffold = [p for p in known_tile if known_tile[p] == 35]
     dnew = dict()
