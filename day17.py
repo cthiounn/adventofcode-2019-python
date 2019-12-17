@@ -111,14 +111,17 @@ def part1(st):
     sumintersect=0
     for p in dscaffold:
         x,y=p
-        if (x+1,y) in dscaffold and (x-1,y) in dscaffold and (x,y+1) in dscaffold and (x,y-1) in dscaffold:
-            print(sumintersect,x,y,x*y)
+        if (x+1,y) in dscaffold and (x-1,y) in dscaffold and (x,y+1) in dscaffold and (x,y-1) in dscaffold: 
             sumintersect+=x*y
             dnew[(x,y)]="O"
         else:
             dnew[(x,y)]="#"
     print(sumintersect) 
     #printmap(dnew)
+
+    #part2 
+    d=d2.copy()
+    d[0]=2
 
 def ra(a, d):
     return 0 if a not in d else d[a]
@@ -165,4 +168,4 @@ def printmap(d2):
 
 
 part1(numbers[0])
-test()
+#test()
