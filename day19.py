@@ -144,14 +144,14 @@ def part2(st):
     x=0
     y=0
     while (True):
-            if computer(x,y,d)==1 :
-                if computer(x-99,y+99,d)==1:
-                    print((x-99)*10000+(y))
+            if computer(x,y,d)==1 : #topright
+                if computer(x-99,y+99,d)==1 and computer(x,y+99,d)==1 and computer(x-99,y,d)==1: # check bottomleft/bottomright/topleft
+                    print((x-99)*10000+(y)) # print topleft
                     break
                 else:
-                    x+=1
+                    x+=1 #keep searching 1 on the right
             else:
-                y+=1
+                y+=1 #you hit a 0, change line
 
 def computer(x,y,d2):
     if x<0:
