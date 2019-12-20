@@ -98,31 +98,6 @@ def teleport(x, y, step, dportal):
     return (x, y, step + 1)
 
 
-def printmap(d2):
-    xmin = min([x for x, y in d2])
-    ymin = min([y for x, y in d2])
-    xmax = max([x for x, y in d2])
-    ymax = max([y for x, y in d2])
-
-    # print(xmin, ymin, xmax, ymax)
-    for j in range(ymin - 1, ymax + 2):
-        sprint = ""
-        for i in range(xmin - 1, xmax + 2):
-            sprint += str(d2[(i, j)]) if (i, j) in d2 else "."
-        print(sprint)
-
-
-def dicttolist(d2, xmin, xmax, ymin, ymax):
-
-    li = []
-    for j in range(ymin, ymax + 1):
-        sprint = ""
-        for i in range(xmin, xmax + 1):
-            sprint += str(d2[(i, j)]) if (i, j) in d2 else "."
-        li.append(sprint)
-    return li
-
-
 def part2(st, parttwo):
     d = dict()
     portals = dict()
@@ -162,6 +137,7 @@ def part2(st, parttwo):
                         if i == 0 or i + 2 == len(line):
                             outerportal.append((i, j))
 
+    print(len(outerportal))
     # get starting point and finish point
     pstart = [p for p in portals if portals[p] == "AA"]
     pfinish = [p for p in portals if portals[p] == "ZZ"]
@@ -184,7 +160,7 @@ def part2(st, parttwo):
     positions = set()
     while len(tiletoexplore) != 0:
         tile = tiletoexplore.popleft()
-        print(len(tiletoexplore))
+        # print(len(tiletoexplore))
         for lrud in LRUD:
             xt, yt, level, step = tile
             step += 1
@@ -205,18 +181,17 @@ def part2(st, parttwo):
 
             elif (nx, ny) in d and (nx, ny) in portals:
                 nx2, ny2, step2 = teleport(nx, ny, step, portals)
-
                 if (nx2, ny2, level) not in positions:
                     # print(nx,ny,"teleport",nx2,ny2)
                     if (nx, ny) in outerportal:
-                        level += 1
+                        level2 = level - 1
                     else:
-                        level += -1
+                        level2 = level + 1
 
-                    positions.add((nx2, ny2, level))
+                    positions.add((nx2, ny2, level2))
                     # print("level", level)
-                    if abs(level) < 3000:
-                        tiletoexplore.append((nx2, ny2, level, step2))
+                    if level >= 0:
+                        tiletoexplore.append((nx2, ny2, level2, step2))
                         # print(tiletoexplore)
 
     return 0
