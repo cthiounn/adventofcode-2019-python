@@ -52,32 +52,46 @@ def part1(st,lastcard,parttwo,loop):
 part1(numbers,10007,True,1)
 
 
-def part2(st):
+def part2(st,pos,c,n):
     st.reverse()
-    j=2020
-    #101741582076661
-    for k in range(10000):
-        print(k-1,j)
-        for s in st:
-                stack=re.findall("new stack",s)
-                increment=re.findall("increment",s)
-                cut=re.findall("cut",s)
-                num=re.findall("-?\d+",s)
+    # x0=x0=j=2020
+    # x1->ax0+b
+    # x2->ax1+b= a^2 x0 + ab+b
+    # x3->ax2+b= a^2 x1 + ab+b = a^3 x0 + a^2b+ab+b = a^3 x0 +b(sum a^i in range(3))
+    # x^n => a^n x0 +b   * (1 - a^n+1) / (1-a)
+ 
 
-                if len(stack)!=0:
-                    j=119315717514047-1-j
-                elif len(cut)!=0:
-                    # print("before",j)
-                    index=int(num[0])
-                    j=j+index+119315717514047
-                    j%=119315717514047
-                    # print(j,index)
-                elif(len(increment)!=0):
-                    inc=int(num[0])
-                    mod= j% inc
-                    negativemod= mod-inc
-                    j=abs(negativemod)*inc + (j+abs(negativemod)) //inc 
+    a=1
+    b=0
+    for s in st:
+            stack=re.findall("new stack",s)
+            increment=re.findall("increment",s)
+            cut=re.findall("cut",s)
+            num=re.findall("-?\d+",s)
+
+            if len(stack)!=0:
+                b+=1
+                a*=-1
+                b*=-1
+            elif len(cut)!=0:
+                index=int(num[0])
+                b+=index
+            elif(len(increment)!=0):
+                inc=int(num[0])
+                a*=pow(inc, c-2, c)
+                b*=pow(inc, c-2, c)
+    a%=c
+    b%=c
+
+    an=pow(a,n,c)
+    first=an*pos
+    first%=c
+    second=b *(an-1)*pow(a-1,c-2,c)
+    second%=c
+    result=first + second
+    result%=c
+    print(result)
     
 
 
-part2(numbers)
+part2(numbers,2020,119315717514047,101741582076661)
