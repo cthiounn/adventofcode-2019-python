@@ -76,7 +76,7 @@ def part2(st):
                     inc=int(num[0])
                     mod= j% inc
                     negativemod= mod-inc
-                    j=abs(mod)*inc + (j+abs(mod)) //inc 
+                    j=abs(negativemod)*inc + (j+abs(negativemod)) //inc 
     
 
 
