@@ -40,9 +40,53 @@ def part1(st):
                 print(y)
                 stop = True
                 break
-            # elif dest == -1:
-            #     inputQueues[i].append((-1, -1))
             else:
+                inputQueues[dest].append((x, y))
+
+
+def part2(st):
+    l = list(map(int, st.split(",")))
+    d2 = dict()
+    for i in range(len(l)):
+        d2[i] = l[i]
+    known_tile = dict()
+    d = d2.copy()
+    outputQueue = []
+    inputQueues = [deque([]) for _ in range(50)]
+    status = [(0, 0, d.copy()) for _ in range(50)]
+    for j in range(len(inputQueues)):
+        inputQueues[j].append((j, -1))
+    globalStop = False
+    total = 0
+    x = 0
+    y = 0
+    dest = 0
+    stop = False
+    buffer = (0, 0)
+    seen = []
+    while not stop:
+        number = [j for j in inputQueues if len(j) > 0]
+        if len(number) == 0:
+            inputQueues[0].append(buffer)
+            if len(seen) > 0 and buffer[1] != seen[-1]:
+                seen.append(buffer[1])
+            elif len(seen) == 0:
+                seen.append(buffer[1])
+            else:
+                print(buffer[1])
+                stop = False
+                break
+        for i in range(50):
+            iinit, rbinit, dinit = status[i]
+            oo = []
+            if len(inputQueues[i]) > 0:
+                oo.append(inputQueues[i].popleft())
+            result = computer(oo, iinit, rbinit, dinit)
+            x, y, iinit, rbinit, dinit, dest = result
+            status[i] = (iinit, rbinit, dinit)
+            if dest == 255:
+                buffer = (x, y)
+            elif dest != -1:
                 inputQueues[dest].append((x, y))
 
 
@@ -150,3 +194,5 @@ def computer(inputs, iinit, rbinit, d2):
 
 
 part1(numbers[0])
+
+part2(numbers[0])
