@@ -1,6 +1,6 @@
 import sys
 import string
-from collections import deque
+from collections import Counter
 import re
 import math
 
@@ -21,13 +21,10 @@ def part1(st):
             for i in range(len(line)):
                 chartoappend = "."
                 c = countbugneigh(newgrid2, i, j)
-                if newgrid2[j][i] == "#":
-                    if c == 1:
-                        chartoappend = "#"
-                elif newgrid2[j][i] == ".":
-                    if c == 1 or c == 2:
-                        chartoappend = "#"
-
+                if newgrid2[j][i] == "#" and c == 1:
+                    chartoappend = "#"
+                elif newgrid2[j][i] == "." and (c == 1 or c == 2):
+                    chartoappend = "#"
                 newline += chartoappend
             newgrid.append(newline)
         if repr(newgrid) in seen:
@@ -60,4 +57,32 @@ def calculate(n):
     return sum
 
 
+def part2(st):
+    levels = dict()
+    minutes = 0
+    while minutes < 200:
+        minutes += 1
+        newgrid = []
+        for j in range(len(st)):
+            line = st[j]
+            newline = ""
+            for i in range(len(line)):
+                chartoappend = "."
+                c = countbugneigh(st, i, j)
+                if st[j][i] == "#" and c == 1:
+                    chartoappend = "#"
+                elif st[j][i] == "." and (c == 1 or c == 2):
+                    chartoappend = "#"
+                newline += chartoappend
+            newgrid.append(newline)
+        st = newgrid.copy()
+    vals = [v for v in levels.values()]
+    print(sum(map(numbug, vals)))
+
+
+def numbug(s):
+    return Counter(repr(s))["#"]
+
+
 part1(numbers)
+part2(numbers)
