@@ -1,28 +1,32 @@
-import string
 from collections import deque
-with open("data/other_input/day21-input.file") as f:
+
+with open("data/other_input/day25-input.file") as f:
     numbers = [line.strip() for line in f]
 
 
-
-def part1(st,ccstart,cc):
+def part1(st, ccstart):
     l = list(map(int, st.split(",")))
     d2 = dict()
     for i in range(len(l)):
         d2[i] = l[i]
 
-    d = d2.copy() 
+    d = d2.copy()
     outputQueue = []
     inputQueue = []
     globalStop = False
-    
-    command =ccstart
-    command += cc+"\n"
+
+    command = (
+        ccstart.replace("E", "east\n")
+        .replace("N", "north\n")
+        .replace("S", "south\n")
+        .replace("W", "west\n")
+        .replace("T", "take")
+        .replace("D", "drop")
+    )
     inputQueue = deque([ord(c) for c in command])
     i = 0
     rb = 0
-    step = 0
-    outps=""
+    outps = ""
     while not globalStop:
         stop = False
         while not stop:
@@ -63,8 +67,12 @@ def part1(st,ccstart,cc):
                 i += 4
             elif c == 3:
                 p1 = r2 + rb if pp1 == 2 else r2
-                towrite = inputQueue.popleft()
-                d[p1] = towrite
+                if len(inputQueue) > 0:
+                    towrite = inputQueue.popleft()
+                    d[p1] = towrite
+                else:
+                    stop = True
+                    globalStop = True
                 i += 2
             elif c == 4:
                 outputQueue.append(p1)
@@ -95,42 +103,56 @@ def part1(st,ccstart,cc):
                 print("???")
         if globalStop:
             break
-    
-    for o in outputQueue:
-        if o == 35:
-            outps+='#'
-        elif o == 46:
-            outps+='.'
-        elif o==10:
-            outps+='\n'
-        elif o==64:
-            outps+='@'
-        else:
-            print(o)
-    print(outps)
+
+    # print(outputQueue)
+    print("".join(map(chr, outputQueue)))
+
 
 def ra(a, d):
-    return 0 if a not in d else d[a]  
+    return 0 if a not in d else d[a]
 
-command1 =""
-command1 += "NOT A J\n"
-command1 += "NOT B T\n"
-command1 += "OR T J\n"
-command1 += "NOT C T\n"
-command1 += "OR T J\n"
-command1 += "AND D J\n"
 
-command2 =""
-command2 += "NOT A J\n"
-command2 += "NOT B T\n"
-command2 += "OR T J\n"
-command2 += "NOT C T\n"
-command2 += "OR T J\n"
-command2 += "AND D J\n"
-command2 += "NOT E T\n"
-command2 += "NOT T T\n"
-command2 += "OR H T\n"
-command2 += "AND T J\n"
+command1 = ""  # E
+command1 += "E"  # N,S,(W)
+# command1 += "S"
+# command1 += "T escape pod\n"
+command1 += "N"  # N,(S),E
+command1 += "N"  # ENN:spool of cat6
+command1 += "T spool of cat6\n"
+command1 += "S"
+command1 += "E"  # N,(W)
+command1 += "T mug\n"  # ENE:mug
+command1 += "N"  # N,E,(S)
+command1 += "N"
+# command1 += "take infinite loop\n"
+command1 += "W"  # N,S,(E)
+command1 += "T asterisk\n"
+# command1 += "north\n"
+# command1 += "take molten lava\n"
+command1 += "S"
+command1 += "T monolith\n"
+command1 += "NEESE"
+command1 += "T sand\n"
+command1 += "SW"
+command1 += "T prime number\n"
+command1 += "ENE"
+# command1 += "take giant electromagnet\n"
+# command1 += "N"
+# command1 += "T photons\n"
+# command1 += "drop monolith\n"
+command1 += "S"
+command1 += "T tambourine\n"
+command1 += "W"
+command1 += "T festive hat\n"
+command1 += "N"
+#  command1 += "D sand\n"
+command1 += "D mug\n"
+command1 += "D spool of cat6\n"
+# command1 += "D tambourine\n"
+command1 += "D festive hat\n"
 
-part1(numbers[0],command1,"WALK")
-part1(numbers[0],command2,"RUN")
+command1 += "D monolith\n"
+command1 += "W"
+
+part1(numbers[0], command1)
+
