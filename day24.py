@@ -59,10 +59,12 @@ def calculate(n):
 
 def part2(st, time):
     levels = dict()
-    st[2] = st[2][:2] + "X" + st[2][3:]
+    st[2] = st[2][:2] + "?" + st[2][3:]
     w, n, e, s = countBorderBug(st)
     ww, nn, ee, ss = countSpecialBug(st)
     levels[0] = (st, w, n, e, s, ww, nn, ee, ss)
+    levels[-1] = (createNewLevel(), 0, 0, 0, 0, 0, 0, 0, 0)
+    levels[1] = (createNewLevel(), 0, 0, 0, 0, 0, 0, 0, 0)
     minutes = 0
     while minutes < time:
         minutes += 1
@@ -93,24 +95,25 @@ def move(l):
     for i in l:
         # create level maxbottom and maxtop
         if (i + 1) not in l:
-            top = (createNewLevel(), 0, 0, 0, 0, 0, 0, 0, 0)
-            newlevels[i + 1] = top
-        else:
-            top = l[i + 1]
-        if (i - 1) not in l:
             bottom = (createNewLevel(), 0, 0, 0, 0, 0, 0, 0, 0)
-            newlevels[i - 1] = bottom
+            newlevels[i + 1] = bottom
         else:
-            bottom = l[i - 1]
+            bottom = l[i + 1]
+        if (i - 1) not in l:
+            top = (createNewLevel(), 0, 0, 0, 0, 0, 0, 0, 0)
+            newlevels[i - 1] = top
+        else:
+            top = l[i - 1]
         level = imove(l[i], top, bottom)
+
         newlevels[i] = level
-    print(newlevels[0], newlevels[1])
     return newlevels
 
 
 def imove(middle, top, bottom):
     mid = middle[0]
-    _, w, n, e, s, ww, nn, ee, ss = top
+    _, _, _, _, _, ww, nn, ee, ss = top
+    _, w, n, e, s, _, _, _, _ = bottom
     newgrid = []
     for j in range(len(mid)):
         newline = ""
@@ -121,8 +124,8 @@ def imove(middle, top, bottom):
                 chartoappend = "#"
             elif mid[j][i] == "." and (c == 1 or c == 2):
                 chartoappend = "#"
-            elif mid[j][i] == "X":
-                chartoappend = "X"
+            elif mid[j][i] == "?":
+                chartoappend = "?"
             newline += chartoappend
         newgrid.append(newline)
     w1, n1, e1, s1 = countBorderBug(newgrid)
@@ -161,9 +164,8 @@ def countadvancedbugneigh(st, i, j, w, n, e, s, ww, nn, ee, ss):
 
 
 def createNewLevel():
-    p = ["....." for _ in range(4)]
-
-    p[2] = p[2][:2] + "X" + p[2][3:]
+    p = ["....." for _ in range(5)]
+    p[2] = p[2][:2] + "?" + p[2][3:]
     return p
 
 
@@ -172,4 +174,4 @@ def numbug(s):
 
 
 part1(numbers)
-part2(numbers, 6)
+part2(numbers, 200)
